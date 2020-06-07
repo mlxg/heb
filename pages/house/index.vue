@@ -19,7 +19,9 @@
             indicator-position="none"
           >
             <el-carousel-item v-for="item in 4" :key="item">
-              <h3>{{ item }}</h3>
+              <h3>
+                {{ item }}
+              </h3>
             </el-carousel-item>
           </el-carousel>
         </div>
@@ -57,52 +59,53 @@
             </li>
           </ul>
         </div>
-      </div>
-      <div class="build-introduce">
-        <div class="intro-price">
-          <b>38000</b>
-          <em>元/m²</em> 参考均价
-          <span> <img src="@/assets/img/house/icon_share.png" alt />分享 </span>
-        </div>
-        <div class="intro-type">
-          <ul>
-            <li>中式园林</li>
-            <li>中式园林</li>
-            <li>中式园林</li>
-          </ul>
-        </div>
-        <div class="intro-info">
-          <ul>
-            <li><span>产品类型</span>住宅、公寓、别墅</li>
-            <li><span>楼盘地址</span>深圳市龙岗区坪山中心恒大城</li>
-            <li>
-              <span>楼盘户型</span>3室2厅、4室2厅、5室2厅
-              <a href="/">查看全部户型 &#62;</a>
-            </li>
-          </ul>
-        </div>
-        <div class="intro-more">
-          <a href="/">查看更多楼盘详情 &#62;</a>
-        </div>
-
-        <div class="hr"></div>
-        <div class="intro-code">
-          <div>
-            <img src alt />
-            扫码在线咨询
+        <div class="build-introduce">
+          <div class="intro-price">
+            <b>38000</b>
+            <em>元/m²</em> 参考均价
+            <span>
+              <img src="@/assets/img/house/icon_share.png" alt />分享
+            </span>
           </div>
-          <div>
-            <img src alt />
-            关注楼盘公众号
+          <div class="intro-type">
+            <ul>
+              <li>中式园林</li>
+              <li>中式园林</li>
+              <li>中式园林</li>
+            </ul>
           </div>
-        </div>
-        <div class="intro-btn">
-          <span class="sub">
-            <a href>网上认购</a>
-          </span>
-          <span class="recommend">
-            <a href>立即推荐</a>
-          </span>
+          <div class="intro-info">
+            <ul>
+              <li><span>产品类型</span>住宅、公寓、别墅</li>
+              <li><span>楼盘地址</span>深圳市龙岗区坪山中心恒大城</li>
+              <li>
+                <span>楼盘户型</span>3室2厅、4室2厅、5室2厅
+                <a href="/">查看全部户型 &#62;</a>
+              </li>
+            </ul>
+          </div>
+          <div class="intro-more">
+            <a href="/">查看更多楼盘详情 &#62;</a>
+          </div>
+          <div class="hr"></div>
+          <div class="intro-code">
+            <div>
+              <img src alt />
+              扫码在线咨询
+            </div>
+            <div>
+              <img src alt />
+              关注楼盘公众号
+            </div>
+          </div>
+          <div class="intro-btn">
+            <span class="sub">
+              <a href>网上认购</a>
+            </span>
+            <span class="recommend">
+              <a href>立即推荐</a>
+            </span>
+          </div>
         </div>
       </div>
     </section>
@@ -172,7 +175,6 @@
               </li>
             </ul>
           </div>
-
           <div class="house-type house-source tab-content">
             <header>
               特价房源 <span><a href="">查看更多 &#62;</a></span>
@@ -226,21 +228,7 @@
           <div class="house-location tab-content">
             <header>楼盘位置</header>
             <div class="map">
-              <baidu-map
-                class="bdwindow"
-                :dragging="mapOpt.dragging"
-                :center="mapOpt.center"
-                :zoom="mapOpt.zoom"
-                :scroll-wheel-zoom="mapOpt.scroll"
-              >
-                <bm-info-window
-                  :position="mapOpt.center"
-                  :title="mapOpt.title"
-                  :show="mapOpt.show"
-                >
-                  <p class="bdwtext">{{ mapOpt.contents }}</p>
-                </bm-info-window>
-              </baidu-map>
+              <Map :map-data="mapData"></Map>
             </div>
           </div>
           <div class="house-around tab-content">
@@ -348,7 +336,6 @@
           </ul>
         </div>
       </div>
-
       <div class="find-more">
         <a href>查看更多楼盘</a>
       </div>
@@ -358,11 +345,13 @@
 <script>
 import HouseAside from '@/pages/house/components/houseAside'
 import HouseNews from '@/pages/house/components/houseNews'
+import Map from '@/components/common/map'
 
 export default {
   components: {
     HouseAside,
-    HouseNews
+    HouseNews,
+    Map
   },
   props: {
     imgHeight: {
@@ -372,22 +361,9 @@ export default {
   },
   data() {
     return {
+      // tab标签联动
       isFixed: false,
       offsetTop: 0,
-      // 百度地图配置
-
-      mapOpt: {
-        jump_path: '',
-        center: { lng: 120.4373010751, lat: 23.109563817 },
-        zoom: 15, // 缩放级别
-        title: '标题',
-        contents: '地址：具体地址信息', // 标签内容
-        show: true, // 显示标签
-        scroll: true, // 地图缩放
-        dragging: true // 地图拖拽
-      },
-
-      // headerFixed: true,
       active: '1',
       arrDom: '',
       tabList: [
@@ -423,7 +399,14 @@ export default {
           id: 8,
           name: '猜你喜欢'
         }
-      ]
+      ],
+
+      mapData: {
+        longitude: 113.845282,
+        latitude: 22.613041,
+        title: '1',
+        description: '1'
+      }
     }
   },
   mounted() {
@@ -432,12 +415,6 @@ export default {
     this.$nextTick(() => {
       this.offsetTop = document.querySelector('#boxFixed').offsetTop
     })
-
-    // const map = new BMap.Map('allmap')
-    // map.centerAndZoom(new BMap.Point(116.404, 39.915), 11)
-    // const local = new BMap.LocalSearch(map, {
-    //   renderOptions: { map }
-    // })
   },
   destroyed() {
     window.removeEventListener('scroll', this.handleScroll)
@@ -465,7 +442,7 @@ export default {
       }
     },
     handelSelectTab(id) {
-      window.scroll(0, this.arrDom[id - 1].offsetTop + 750)
+      window.scroll(0, this.arrDom[id - 1].offsetTop + 700)
     }
   }
 }
@@ -524,10 +501,8 @@ nav {
   }
 
   .build-preview {
-    display: inline-block;
-    .wh(580px, 464px);
-    margin-right: 16px;
-
+    position: relative;
+    height: 464px;
     .prev-view {
       background: #f1f1f1;
       .wh(580px, 358px);
@@ -541,7 +516,7 @@ nav {
           .wh(104px, 90px);
           display: inline-block;
           background: #f1f1f1;
-          margin-right: 10px;
+          margin-right: 12px;
 
           &:last-child {
             margin-right: 0;
@@ -571,9 +546,12 @@ nav {
   }
 
   .build-introduce {
+    position: absolute;
+    right: 0;
+    top: 0;
     .fs(16px);
     vertical-align: bottom;
-    display: inline-block;
+
     .wh(596px, 464px);
     box-shadow: 0 4px 22px -4px rgba(227, 227, 227, 1);
     .borderRadius(8px);

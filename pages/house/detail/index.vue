@@ -74,10 +74,8 @@ export default {
 .buildDetail-container {
   padding-top: 18px;
 }
-
 nav {
   .sc(16px, #a2a0b4);
-
   .cur {
     .sc(16px, #44444f);
   }
@@ -169,11 +167,6 @@ nav {
     margin: 0 0 24px 0;
     padding-top: 50px;
   }
-
-  .house-warp {
-    /*width: 740px;*/
-  }
-
   .house-type {
     ul {
       li {
@@ -181,33 +174,27 @@ nav {
         display: inline-block;
         width: 203px;
         margin-right: 50px;
-
         &:last-child {
           margin-right: 0;
         }
-
         img {
           display: inline-block;
           background: @globalNull;
           .wh(203px, 152px);
         }
-
         span {
           color: @globalBlack;
           padding-bottom: 8px;
           display: block;
           .fs(16px);
-
           &.house-type-title {
             margin-top: 24px;
             .fs(20px);
           }
-
           &.prev {
             text-decoration: line-through;
             .sc(14px, #a8a9ae);
           }
-
           &.sale {
             em {
               color: #e62e37;

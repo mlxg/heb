@@ -31,16 +31,11 @@ export default {
      */
     'element-ui/lib/theme-chalk/index.css',
     '@assets/css/global.less'
-    // 'swiper/css/swiper.css'
   ],
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [
-    '@/plugins/element-ui',
-    { src: '@/plugins/map.js', ssr: false }
-    // { src: '@/plugins/vue-swiper.js', ssr: false }
-  ],
+  plugins: ['@/plugins/element-ui'],
   /*
    ** Nuxt.js dev-modules
    */
@@ -60,7 +55,9 @@ export default {
     /*
      ** You can extend webpack config here
      */
-    extend(config, ctx) {}
+    extend(config, ctx) {},
+    cache: true,
+    parallel: true
   },
 
   // 设置代理

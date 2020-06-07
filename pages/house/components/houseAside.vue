@@ -149,12 +149,10 @@ export default {
           background: @globalNull;
           .borderRadius(34px);
         }
-
         span {
           .sc(14px, @globalBlack);
           margin-top: 6px;
         }
-
         em {
           cursor: pointer;
           .sc(12px, #2660b1);
@@ -168,13 +166,10 @@ export default {
       }
     }
   }
-
   .aside-footer {
     text-align: center;
-
     a {
       .sc(16px, @globalBlack);
-
       img {
         vertical-align: -3px;
         margin-right: 5px;
