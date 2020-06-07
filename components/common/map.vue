@@ -1,18 +1,12 @@
 <template>
-  <div id="place_map_wrap">
-    <div class="place_map_box">
-      <div id="place_map">
-        <div id="map" :style="mapStyle"></div>
-      </div>
-    </div>
-  </div>
+  <div id="map" :style="mapStyle"></div>
 </template>
 
 <script>
-import { map } from '~/utils/map'
+import { MapLib } from '@/utils/map'
+
 export default {
   name: 'Map',
-
   props: {
     // eslint-disable-next-line vue/require-default-prop
     mapData: {
@@ -44,66 +38,105 @@ export default {
   },
   data() {
     return {
-      ak: 'R0bgsowGrq3ElavVQTGSta90',
-
       mapStyle: {
         width: '100%',
         height: '100%'
       }
     }
   },
+
   mounted() {
-    this.$nextTick(() => {
-      const self = this
-      map(self.ak).then((BMap) => {
-        const map = new BMap.Map('map')
-        const point = new BMap.Point(
-          this.mapData.longitude,
-          this.mapData.latitude
-        )
-        const marker = new BMap.Marker(point) // 创建标注
-        map.enableScrollWheelZoom() // 启用滚轮放大缩小，默认禁用
-        map.enableContinuousZoom() // 启用地图惯性拖拽，默认禁用
-        map.addOverlay(marker) // 将标注添加到地图中
-        map.centerAndZoom(point, 15)
-        // 信息窗的配置信息
-        const opts = {
-          width: 250,
-          height: 120,
-          title: this.mapData.title
-        }
-        const infoWindow = new BMap.InfoWindow(this.mapData.description, opts) // 创建信息窗口对象
-        marker.addEventListener('click', function() {
-          map.openInfoWindow(infoWindow, point)
-        })
-        map.enableScrollWheelZoom(true)
-        map.openInfoWindow(infoWindow, point) // 开启信息窗口
-        const top_left_navigation = new BMap.NavigationControl() // 左上角，添加默认缩放平移控件
-        map.addControl(top_left_navigation)
+    MapLib().then((BMapLib) => {
+      const map = new BMap.Map('map')
+      const point = new BMap.Point(
+        this.mapData.longitude,
+        this.mapData.latitude
+      )
+      const marker = new BMap.Marker(point) // 创建标注
+
+      map.enableScrollWheelZoom() // 启用滚轮放大缩小，默认禁用
+      map.enableContinuousZoom() // 启用地图惯性拖拽，默认禁用
+      map.addOverlay(marker) // 将标注添加到地图中
+      map.centerAndZoom(point, 15)
+      map.enableScrollWheelZoom(true)
+
+      const top_left_navigation = new BMap.NavigationControl() // 左上角，添加默认缩放平移控件
+      map.addControl(top_left_navigation)
+
+      const content =
+        '<div style="margin:0;line-height:20px;padding:2px;">' +
+        '地址：北京市海淀区上地十街10号<br/>电话：(010)59928888<br/>简介：百度大厦位于北京市海淀区西二旗地铁站附近，为百度公司综合研发及办公总部。' +
+        '</div>'
+      let searchInfoWindow = null
+
+      searchInfoWindow = new BMapLib.SearchInfoWindow(map, content, {
+        title: '百度大厦', // 标题
+        width: 290, // 宽度
+        height: 105, // 高度
+        panel: 'panel', // 检索结果面板
+        enableAutoPan: true, // 自动平移
+        searchTypes: [
+          // eslint-disable-next-line no-undef
+          BMAPLIB_TAB_SEARCH, // 周边检索
+          // eslint-disable-next-line no-undef
+          BMAPLIB_TAB_TO_HERE, // 到这里去
+          // eslint-disable-next-line no-undef
+          BMAPLIB_TAB_FROM_HERE // 从这里出发
+        ]
       })
+      searchInfoWindow.open(marker)
+      marker.addEventListener('click', function() {
+        searchInfoWindow.open(marker)
+      })
+      // })
     })
+  },
+  head() {
+    return {
+      link: [
+        {
+          rel: 'stylesheet',
+          href:
+            'http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.css'
+        }
+      ],
+      script: [
+        {
+          src: 'http://api.map.baidu.com/api?v=2.0&ak=R0bgsowGrq3ElavVQTGSta90'
+        }
+      ]
+    }
   }
 }
 </script>
 
 <style scoped>
-#place_map_wrap {
+#map {
+  height: 500px;
   width: 100%;
-}
-.place_map_box {
   overflow: hidden;
-  width: 100%;
-  height: 309px;
-  margin: 0 auto;
 }
 
-div#place_map {
-  overflow: hidden;
-  width: 100%;
-  height: 100%;
+dl,
+dt,
+dd,
+ul,
+li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
-.anchorBL,
-.BMap_cpyCtrl.BMap_noprint.anchorBL {
-  display: none !important;
+dt {
+  font-size: 14px;
+  font-weight: bold;
+  border-bottom: 1px dotted #000;
+  padding: 5px 0 5px 5px;
+  margin: 5px 0;
+}
+dd {
+  padding: 5px 0 0 5px;
+}
+li {
+  line-height: 28px;
 }
 </style>

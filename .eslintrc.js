@@ -23,5 +23,9 @@ module.exports = {
     'no-console': 'off',
     'camelcase': 'off',
     'eqeqeq': 'off'
+  },
+  globals: {
+    BMap: true,
+    BMapLib: true,
   }
 }
